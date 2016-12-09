@@ -98,7 +98,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
             $magicPart = strtolower(substr($methodName, 2));
             if (in_array($magicPart, $this->magicMethods) === FALSE) {
                 $error = 'Method name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
-                $phpcsFile->addError($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
+                $phpcsFile->addWarning($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
             }
 
             return;
@@ -113,7 +113,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         // If it's a private method, it must have an underscore on the front.
         if ($isPublic === FALSE && $methodName{0} !== '_') {
             $error = 'Private method name "%s" must be prefixed with an underscore';
-            $phpcsFile->addError($error, $stackPtr, 'PrivateNoUnderscore', $errorData);
+            $phpcsFile->addWarning($error, $stackPtr, 'PrivateNoUnderscore', $errorData);
             return;
         }
 
@@ -123,7 +123,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
             $error = '%s method name "%s" must not be prefixed with an underscore';
             $data = array( ucfirst($scope), $errorData[0]);
 
-            $phpcsFile->addError($error, $stackPtr, 'PublicUnderscore', $data);
+            $phpcsFile->addWarning($error, $stackPtr, 'PublicUnderscore', $data);
             return;
         }
 
@@ -146,10 +146,10 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
                 }
                 $data = array(ucfirst($scope), $errorData[0]);
 
-                $phpcsFile->addError($error, $stackPtr, 'ScopeNotCamelCaps', $data);
+                $phpcsFile->addWarning($error, $stackPtr, 'ScopeNotCamelCaps', $data);
             } else {
                 $error = 'Method name "%s" is not in camel case format';
-                $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
+                $phpcsFile->addWarning($error, $stackPtr, 'NotCamelCaps', $errorData);
             }
 
         }
@@ -251,7 +251,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
             $magicPart = strtolower(substr($functionName, 2));
             if (in_array($magicPart, $this->magicFunctions) === FALSE) {
                  $error = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
-                 $phpcsFile->addError($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
+                 $phpcsFile->addWarning($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
             }
 
             return;
@@ -276,14 +276,14 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         if ($packagePart !== '') {
             if ($functionName{0} === '_') {
                 $error = 'Function name "%s" is invalid; only private methods should be prefixed with an underscore';
-                $phpcsFile->addError($error, $stackPtr, 'FunctionUnderscore', $errorData);
+                $phpcsFile->addWarning($error, $stackPtr, 'FunctionUnderscore', $errorData);
                 return;
             }
 
             /*
             if ($functionName{0} !== strtoupper($functionName{0})) {
                 $error = 'Function name "%s" is prefixed with a package name but does not begin with a capital letter';
-                $phpcsFile->addError($error, $stackPtr, 'FunctionNoCapital', $errorData);
+                $phpcsFile->addWarning($error, $stackPtr, 'FunctionNoCapital', $errorData);
                 return;
             }
             */
@@ -292,7 +292,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         // If it doesn't have a camel caps part, it's not valid.
         if (trim($camelCapsPart) === '') {
             $error = 'Function name "%s" is not valid; name appears incomplete';
-            $phpcsFile->addError($error, $stackPtr, 'FunctionInvalid', $errorData);
+            $phpcsFile->addWarning($error, $stackPtr, 'FunctionInvalid', $errorData);
             return;
         }
 

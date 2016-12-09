@@ -34,7 +34,7 @@ class TFD_Sniffs_NamingConventions_PropertyNameSniff extends PHP_CodeSniffer_Sta
         if ($isPublic === FALSE && $memberName{0} !== '_') {
             $error = 'Private member variable "%s" must be prefixed with an underscore';
             $data  = array($memberName);
-            $phpcsFile->addError($error, $stackPtr, 'PrivateNoUnderscore', $data);
+            $phpcsFile->addWarning($error, $stackPtr, 'PrivateNoUnderscore', $data);
             return;
         }
 
@@ -42,7 +42,7 @@ class TFD_Sniffs_NamingConventions_PropertyNameSniff extends PHP_CodeSniffer_Sta
         if ($isPublic === TRUE && $scopeSpecified === TRUE && $memberName{0} === '_') {
             $error = '%s member variable "%s" must not be prefixed with an underscore';
             $data  = array(ucfirst($scope), $memberName);
-            $phpcsFile->addError($error, $stackPtr, 'PublicUnderscore', $data);
+            $phpcsFile->addWarning($error, $stackPtr, 'PublicUnderscore', $data);
             return;
         }
 
@@ -58,7 +58,7 @@ class TFD_Sniffs_NamingConventions_PropertyNameSniff extends PHP_CodeSniffer_Sta
                     ucfirst($scope),
                     $memberName,
                 );
-                $phpcsFile->addError($error, $stackPtr, 'MemberNotCamelCaps', $data);
+                $phpcsFile->addWarning($error, $stackPtr, 'MemberNotCamelCaps', $data);
             }
 
         }

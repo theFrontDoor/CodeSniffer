@@ -64,7 +64,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
                              $tokens[$nextCase]['content'],
                             );
 
-                $fix = $phpcsFile->addFixableError($error, $nextCase, $type.'NotLower', $data);
+                $fix = $phpcsFile->addWarning($error, $nextCase, $type.'NotLower', $data);
                 if ($fix === TRUE) {
                     $phpcsFile->fixer->replaceToken($nextCase, $expected);
                 }
@@ -75,7 +75,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
                 || $tokens[($nextCase + 1)]['content'] !== ' ')
             ) {
                 $error = 'CASE keyword must be followed by a single space';
-                $fix   = $phpcsFile->addFixableError($error, $nextCase, 'SpacingAfterCase');
+                $fix   = $phpcsFile->addWarning($error, $nextCase, 'SpacingAfterCase');
                 if ($fix === TRUE) {
                     if ($tokens[($nextCase + 1)]['code'] !== T_WHITESPACE) {
                         $phpcsFile->fixer->addContent($nextCase, ' ');
@@ -90,7 +90,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
             if ($tokens[$opener]['code'] === T_COLON) {
                 if ($tokens[($opener - 1)]['code'] === T_WHITESPACE) {
                     $error = 'There must be no space before the colon in a '.strtoupper($type).' statement';
-                    $fix   = $phpcsFile->addFixableError($error, $nextCase, 'SpaceBeforeColon'.strtoupper($type));
+                    $fix   = $phpcsFile->addWarning($error, $nextCase, 'SpaceBeforeColon'.strtoupper($type));
                     if ($fix === TRUE) {
                         $phpcsFile->fixer->replaceToken(($opener - 1), '');
                     }
@@ -106,7 +106,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
 
                 // if ($tokens[$next]['line'] !== ($tokens[$opener]['line'] + 1)) {
                 //     $error = 'The '.strtoupper($type).' body must start on the line following the statement';
-                //     $fix   = $phpcsFile->addFixableError($error, $nextCase, 'BodyOnNextLine'.strtoupper($type));
+                //     $fix   = $phpcsFile->addWarning($error, $nextCase, 'BodyOnNextLine'.strtoupper($type));
                 //     if ($fix === TRUE) {
                 //         if ($tokens[$next]['line'] === $tokens[$opener]['line']) {
                 //             $padding = str_repeat(' ', ($caseAlignment + $this->indent - 1));
@@ -134,7 +134,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
                     $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($nextCloser - 1), $nextCase, TRUE);
                     if ($tokens[$prev]['line'] === $tokens[$nextCloser]['line']) {
                         $error = 'Terminating statement must be on a line by itself';
-                        $fix   = $phpcsFile->addFixableError($error, $nextCloser, 'BreakNotNewLine');
+                        $fix   = $phpcsFile->addWarning($error, $nextCloser, 'BreakNotNewLine');
                         if ($fix === TRUE) {
                             $phpcsFile->fixer->addNewLine($prev);
                             $phpcsFile->fixer->replaceToken($nextCloser, trim($tokens[$nextCloser]['content']));
@@ -143,7 +143,7 @@ class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSni
                         $diff = ($caseAlignment + $this->indent - $tokens[$nextCloser]['column']);
                         if ($diff !== 0) {
                             $error = 'Terminating statement must be indented to the same level as the CASE body';
-                            $fix   = $phpcsFile->addFixableError($error, $nextCloser, 'BreakIndent');
+                            $fix   = $phpcsFile->addWarning($error, $nextCloser, 'BreakIndent');
                             if ($fix === TRUE) {
                                 if ($diff > 0) {
                                     $phpcsFile->fixer->addContentBefore($nextCloser, str_repeat(' ', $diff));
