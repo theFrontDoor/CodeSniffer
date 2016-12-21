@@ -1,16 +1,15 @@
 ## Windows
-- install php7 to C:\php7
-- add C:\php7 to PATH
-- download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\php7
-- Start an elevated cmd in C:\php7 and run `php go-pear.phar`
+- Install PHP7 to C:\php
+- Add C:\php to PATH
+- Download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\php
+- Start an elevated cmd in C:\php and run `php go-pear.phar`
 - Import the generated .reg file into your windows registry
-- run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
-- open C:\php7\phpcs in Sublime. Replace all instances of "/../CodeSniffer" with "/Pear/PHP/CodeSniffer"
-- Checkout git@gitlab:misc/phpcs.git to  C:\php7\pear\PHP\CodeSniffer\Standards\TFD using Sourcetree
+- Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
+- Open C:\php\phpcs in Sublime. Replace all instances of "/../CodeSniffer" with "/Pear/PHP/CodeSniffer"
+- Checkout git@github.com:theFrontDoor/CodeSniffer.git to C:\php\pear\PHP\CodeSniffer\Standards\TFD using Sourcetree
 
 ## OSX
 - Install PHP
-
 - Install PHP_CodeSniffer
 ```bash
 # make a bin directory in your home folder
@@ -24,7 +23,7 @@ sudo ln -s ~/.bin/phpcs/scripts/phpcs /usr/local/bin/phpcs
 phpcs -i
 # clone TFD coding standard into correct location
 cd ~/.bin/phpcs/CodeSniffer/Standards
-git clone git@gitlab:misc/phpcs.git TFD
+git clone git@github.com:theFrontDoor/CodeSniffer.git TFD
 ```
 
 ## Install Sublime packages
@@ -40,10 +39,11 @@ Restart SublimeText.
 ### User
 ````
 {
-    "trim_automatic_white_space": true,
     "trim_trailing_white_space_on_save": true,
-    "tab_size": 4,
+    "trim_automatic_white_space": true,
     "translate_tabs_to_spaces": true
+    "default_line_ending": "unix"
+    "tab_size": 4,
 }
 ````
 
