@@ -23,7 +23,7 @@ sudo ln -s ~/.bin/phpcs/scripts/phpcs /usr/local/bin/phpcs
 phpcs -i
 # clone TFD coding standard into correct location
 cd ~/.bin/phpcs/CodeSniffer/Standards
-git clone git@github.com:theFrontDoor/CodeSniffer.git TFD
+git clone https://github.com/theFrontDoor/CodeSniffer.git TFD
 ```
 
 ## Install Sublime packages
