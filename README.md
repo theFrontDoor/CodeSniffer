@@ -40,10 +40,11 @@ Restart SublimeText.
 ````
 {
     "trim_trailing_white_space_on_save": true,
+    "ensure_newline_at_eof_on_save": true,
     "trim_automatic_white_space": true,
-    "translate_tabs_to_spaces": true
-    "default_line_ending": "unix"
-    "tab_size": 4,
+    "translate_tabs_to_spaces": true,
+    "default_line_ending": "unix",
+    "tab_size": 4
 }
 ````
 
