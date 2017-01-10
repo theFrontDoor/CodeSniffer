@@ -82,6 +82,7 @@
     <!-- 4. Classes, Properties, and Methods -->
 
     <rule ref="Generic.Classes.DuplicateClassName"/>
+    <rule ref="TFD.Classes.ClassBraces"/>
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
 
     <!-- 4.1. Extends and Implements -->
