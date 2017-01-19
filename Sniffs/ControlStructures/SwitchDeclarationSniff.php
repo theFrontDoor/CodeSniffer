@@ -1,7 +1,6 @@
 <?php
 
-class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSniffer_Sniff
-{
+class TFD_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSniffer_Sniff {
 
     /**
      * The number of spaces code should be indented.

@@ -25,8 +25,7 @@
  * @version   Release: 1.5.2
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
-{
+class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff {
 
 
     /**
@@ -111,7 +110,7 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
                 $error = 'Expected %s spaces after opening bracket; %s found';
                 $data  = array($this->requiredSpacesBeforeOpen, $spaceBeforeOpen);
 
-                $phpcsFile->addWarning($error, ($parenOpener - 1), 'SpacingBeforeOpenBrace', $data);
+                $phpcsFile->addError($error, ($parenOpener - 1), 'SpacingBeforeOpenBrace', $data);
             }
 
             // $phpcsFile->addWarning('$spaceBeforeOpen: ' . $spaceBeforeOpen, ($parenOpener + 1), 'SpacingAfterOasdpenBrace');
@@ -125,7 +124,7 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
                 $error = 'Expected %s spaces after opening bracket; %s found';
                 $data  = array($this->requiredSpacesAfterOpen, $spaceAfterOpen);
 
-                $phpcsFile->addWarning($error, ($parenOpener + 1), 'SpacingAfterOpenBrace', $data);
+                $phpcsFile->addError($error, ($parenOpener + 1), 'SpacingAfterOpenBrace', $data);
             }
 
             if ($tokens[$parenOpener]['line'] === $tokens[$parenCloser]['line']) {
@@ -139,7 +138,7 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
                     $error = 'Expected %s spaces before closing bracket; %s found';
                     $data  = array($this->requiredSpacesBeforeClose, $spaceBeforeClose);
 
-                    $phpcsFile->addWarning($error, ($parenCloser - 1), 'SpaceBeforeCloseBrace', $data);
+                    $phpcsFile->addError($error, ($parenCloser - 1), 'SpaceBeforeCloseBrace', $data);
                 }
 
                 $spaceAfterClose = 0;
@@ -151,7 +150,7 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
                     $error = 'Expected %s spaces after closing bracket; %s found';
                     $data  = array($this->requiredSpacesAfterClose, $spaceAfterClose);
 
-                    $phpcsFile->addWarning($error, ($parenCloser + 1), 'SpaceAfterCloseBrace', $data);
+                    $phpcsFile->addError($error, ($parenCloser + 1), 'SpaceAfterCloseBrace', $data);
                 }
 
             }

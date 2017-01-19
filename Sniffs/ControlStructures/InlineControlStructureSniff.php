@@ -27,8 +27,7 @@
  * @version   Release: 1.5.2
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class TFD_Sniffs_ControlStructures_InlineControlStructureSniff implements PHP_CodeSniffer_Sniff
-{
+class TFD_Sniffs_ControlStructures_InlineControlStructureSniff implements PHP_CodeSniffer_Sniff {
 
     /**
      * A list of tokenizers this sniff supports.

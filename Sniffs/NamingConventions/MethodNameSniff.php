@@ -4,15 +4,14 @@ if (class_exists('PHP_CodeSniffer_Standards_AbstractScopeSniff', TRUE) === FALSE
     throw new PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found');
 }
 
-class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff
-{
+class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff {
 
     /**
      * A list of all PHP magic methods.
      *
      * @var array
      */
-    protected $magicMethods = array(
+    protected $_magicMethods = array(
         'construct',
         'destruct',
         'call',
@@ -38,7 +37,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
      *
      * @var array
      */
-    protected $methodsDoubleUnderscore = array(
+    protected $_methodsDoubleUnderscore = array(
         'soapcall',
         'getlastrequest',
         'getlastresponse',
@@ -57,7 +56,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
      *
      * @var array
      */
-    protected $magicFunctions = array('autoload');
+    protected $_magicFunctions = array('autoload');
 
     /**
      * If TRUE, the string must not have two capital letters next to each other.
@@ -96,7 +95,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         // Is this a magic method. i.e., is prefixed with "__" ?
         if (preg_match('|^__|', $methodName) !== 0) {
             $magicPart = strtolower(substr($methodName, 2));
-            if (in_array($magicPart, $this->magicMethods) === FALSE) {
+            if (in_array($magicPart, $this->_magicMethods) === FALSE) {
                 $error = 'Method name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
                 $phpcsFile->addWarning($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
             }
@@ -182,12 +181,12 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
             }
         }
 
-        // $phpcsFile->addFixableError('$static: ' . $static . '$abstract: ' . $abstract . '$final: ' . $final . '$visibility: ' . $visibility, $stackPtr, 'Wut');
+        // $phpcsFile->addError('$static: ' . $static . '$abstract: ' . $abstract . '$final: ' . $final . '$visibility: ' . $visibility, $stackPtr, 'Wut');
 
         $fixes = array();
         if ($visibility !== 0 && $final > $visibility) {
             $error = 'The final declaration must precede the visibility declaration';
-            $fix   = $phpcsFile->addFixableError($error, $final, 'FinalAfterVisibility');
+            $fix   = $phpcsFile->addError($error, $final, 'FinalAfterVisibility');
             if ($fix === TRUE) {
                 $fixes[$final]       = '';
                 $fixes[($final + 1)] = '';
@@ -200,7 +199,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         }
         if ($visibility !== 0 && $abstract > $visibility) {
             $error = 'The abstract declaration must precede the visibility declaration';
-            $fix   = $phpcsFile->addFixableError($error, $abstract, 'AbstractAfterVisibility');
+            $fix   = $phpcsFile->addError($error, $abstract, 'AbstractAfterVisibility');
             if ($fix === TRUE) {
                 $fixes[$abstract]       = '';
                 $fixes[($abstract + 1)] = '';
@@ -213,7 +212,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         }
         if ($static !== 0 && $static < $visibility) {
             $error = 'The static declaration must come after the visibility declaration';
-            $fix   = $phpcsFile->addFixableError($error, $static, 'StaticBeforeVisibility');
+            $fix   = $phpcsFile->addError($error, $static, 'StaticBeforeVisibility');
             if ($fix === TRUE) {
                 $fixes[$static]       = '';
                 $fixes[($static + 1)] = '';
@@ -249,7 +248,7 @@ class TFD_Sniffs_NamingConventions_MethodNameSniff extends PHP_CodeSniffer_Stand
         // Is this a magic function. i.e., it is prefixed with "__".
         if (preg_match('|^__|', $functionName) !== 0) {
             $magicPart = strtolower(substr($functionName, 2));
-            if (in_array($magicPart, $this->magicFunctions) === FALSE) {
+            if (in_array($magicPart, $this->_magicFunctions) === FALSE) {
                  $error = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
                  $phpcsFile->addWarning($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
             }
