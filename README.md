@@ -28,6 +28,7 @@ git clone https://github.com/theFrontDoor/CodeSniffer.git TFD
 
 ## Install Sublime packages
 
+- EditorConfig
 - SublimeLinter
 - SublimeLinter-php
 - SublimeLinter-phpcs
@@ -66,3 +67,5 @@ Restart SublimeText.
     }
 }
 ````
+
+Note: The first time you save the "SublimeLinter - User" preferences and restart sublime it will reset the config file
