@@ -40,6 +40,11 @@ foreach ($files as $file) {
         continue;
     }
 
+    if (substr($fullFile, -4) !== '.php' && substr($fullFile, -8) !== '.php.inc') {
+        echo(' - ' . $file . ' skipping due to invalid file extension' . PHP_EOL);
+        continue;
+    }
+
     if (is_dir($fullFile)) {
         echo('  - ' . $file . ' is a directory, assuming submodule and skipping' . PHP_EOL);
         continue;
