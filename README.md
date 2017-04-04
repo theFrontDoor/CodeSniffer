@@ -12,18 +12,25 @@
 - Install PHP
 - Install PHP_CodeSniffer
 ```bash
-# make a bin directory in your home folder
+# make a .bin directory in your home folder
 mkdir ~/.bin
 cd ~/.bin
+
 # clone PHP_CodeSniffer from GitHub
 git clone https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
+
 # add phpcs to your path
 sudo ln -s ~/.bin/phpcs/scripts/phpcs /usr/local/bin/phpcs
+
 # check if phpcs bin is available
 phpcs -i
+
 # clone TFD coding standard into correct location
 cd ~/.bin/phpcs/CodeSniffer/Standards
 git clone https://github.com/theFrontDoor/CodeSniffer.git TFD
+
+# set the default standard
+phpcs --config-set default_standard TFD
 ```
 
 ## Install Sublime packages
