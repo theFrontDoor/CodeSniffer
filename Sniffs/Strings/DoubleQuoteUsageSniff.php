@@ -6,7 +6,11 @@
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
- * @author    theFrontDoor <internet@thefrontdoor.nl>
+ * @author    Greg Sherwood <gsherwood@squiz.net>
+ * @author    Marc McIntyre <mmcintyre@squiz.net>
+ * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
+ * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
 /**
@@ -16,20 +20,28 @@
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
- * @author    theFrontDoor <internet@thefrontdoor.nl>
+ * @author    Greg Sherwood <gsherwood@squiz.net>
+ * @author    Marc McIntyre <mmcintyre@squiz.net>
+ * @copyright 2006-2014 Squiz Pty Ltd (ABN 77 084 670 600)
+ * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff {
+class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
+{
+
 
     /**
      * Returns an array of tokens this test wants to listen for.
      *
      * @return array
      */
-    public function register() {
+    public function register()
+    {
         return array(
-                T_CONSTANT_ENCAPSED_STRING,
-                T_DOUBLE_QUOTED_STRING,
-               );
+            T_CONSTANT_ENCAPSED_STRING,
+            T_DOUBLE_QUOTED_STRING,
+        );
 
     }//end register()
 
@@ -43,7 +55,8 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff 
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
 
         // We are only interested in the first token in a multi-line string.
@@ -51,15 +64,22 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff 
             return;
         }
 
-        $workingString = $tokens[$stackPtr]['content'];
+        $workingString   = $tokens[$stackPtr]['content'];
+        $lastStringToken = $stackPtr;
+
         $i = ($stackPtr + 1);
-        while ($tokens[$i]['code'] === $tokens[$stackPtr]['code']) {
-            $workingString .= $tokens[$i]['content'];
-            $i++;
+        if (isset($tokens[$i]) === true) {
+            while ($i < $phpcsFile->numTokens
+                && $tokens[$i]['code'] === $tokens[$stackPtr]['code']
+            ) {
+                $workingString  .= $tokens[$i]['content'];
+                $lastStringToken = $i;
+                $i++;
+            }
         }
 
         // Check if it's a double quoted string.
-        if (strpos($workingString, '"') === FALSE) {
+        if (strpos($workingString, '"') === false) {
             return;
         }
 
@@ -71,50 +91,61 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff 
 
         // The use of variables in double quoted strings is not allowed.
         if ($tokens[$stackPtr]['code'] === T_DOUBLE_QUOTED_STRING) {
-            $stringTokens = token_get_all('<?php '.$workingString);
-            foreach ($stringTokens as $token) {
-                if (is_array($token) === TRUE && $token[0] === T_VARIABLE) {
-                    $error = 'Variable "%s" not allowed in double quoted string; use concatenation instead';
-                    $data  = array($token[1]);
-                    $phpcsFile->addError($error, $stackPtr, 'ContainsVar', $data);
-                }
-            }
+            // $stringTokens = token_get_all('<?php '.$workingString);
+            // foreach ($stringTokens as $token) {
+            //     if (is_array($token) === true && $token[0] === T_VARIABLE) {
+            //         $error = 'Variable "%s" not allowed in double quoted string; use concatenation instead';
+            //         $data  = array($token[1]);
+            //         $phpcsFile->addError($error, $stackPtr, 'ContainsVar', $data);
+            //     }
+            // }
 
             return;
         }//end if
 
-        // Work through the following tokens, in case this string is stretched
-        // over multiple Lines.
-        for ($i = ($stackPtr + 1); $i < $phpcsFile->numTokens; $i++) {
-            if ($tokens[$i]['type'] !== 'T_CONSTANT_ENCAPSED_STRING') {
-                break;
-            }
-
-            $workingString .= $tokens[$i]['content'];
-        }
-
         $allowedChars = array(
-                         '\0',
-                         '\n',
-                         '\u',
-                         '\r',
-                         '\f',
-                         '\t',
-                         '\v',
-                         '\x',
-                         '\b',
-                         '\'',
-                        );
+            '\0',
+            '\1',
+            '\2',
+            '\3',
+            '\4',
+            '\5',
+            '\6',
+            '\7',
+            '\n',
+            '\r',
+            '\f',
+            '\t',
+            '\v',
+            '\x',
+            '\b',
+            '\e',
+            '\u',
+            '\'',
+        );
 
         foreach ($allowedChars as $testChar) {
-            if (strpos($workingString, $testChar) !== FALSE) {
+            if (strpos($workingString, $testChar) !== false) {
                 return;
             }
         }
 
         $error = 'String %s does not require double quotes; use single quotes instead';
-        $data  = array($workingString);
-        $phpcsFile->addWarning($error, $stackPtr, 'NotRequired', $data);
+        $data  = array(str_replace(array("\r", "\n"), array('\r', '\n'), $workingString));
+        $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotRequired', $data);
+
+        if ($fix === true) {
+            $phpcsFile->fixer->beginChangeset();
+            $innerContent = substr($workingString, 1, -1);
+            $innerContent = str_replace('\"', '"', $innerContent);
+            $phpcsFile->fixer->replaceToken($stackPtr, "'$innerContent'");
+            while ($lastStringToken !== $stackPtr) {
+                $phpcsFile->fixer->replaceToken($lastStringToken, '');
+                $lastStringToken--;
+            }
+
+            $phpcsFile->fixer->endChangeset();
+        }
 
     }//end process()
 
