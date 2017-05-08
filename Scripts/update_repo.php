@@ -3,7 +3,7 @@
 
 $reposToPull = array(
     '~/.bin/phpcs' => 'origin 2.9',
-    '~/.bin/phpcs/src/Standards/TFD' => 'origin master',
+    '~/.bin/phpcs/CodeSniffer/Standards/TFD' => 'origin master',
 );
 
 echo('Updating repositories..' . PHP_EOL);
