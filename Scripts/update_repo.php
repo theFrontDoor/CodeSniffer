@@ -2,7 +2,7 @@
 <?php
 
 $reposToPull = array(
-    '~/.bin/phpcs' => 'origin master',
+    '~/.bin/phpcs' => 'origin 2.9',
     '~/.bin/phpcs/src/Standards/TFD' => 'origin master',
 );
 
