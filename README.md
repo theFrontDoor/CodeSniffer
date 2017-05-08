@@ -17,7 +17,7 @@ mkdir ~/.bin
 cd ~/.bin
 
 # clone PHP_CodeSniffer from GitHub
-git clone https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
+git clone -b 2.9 https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
 
 # add phpcs to your path
 sudo ln -s ~/.bin/phpcs/scripts/phpcs /usr/local/bin/phpcs
