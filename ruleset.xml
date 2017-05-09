@@ -29,11 +29,6 @@
             <property name="checkClosures" value="true"/>
         </properties>
     </rule>
-    <rule ref="Generic.NamingConventions.CamelCapsFunctionName">
-        <properties>
-            <property name="strict" value="false"/>
-        </properties>
-    </rule>
     <rule ref="Generic.NamingConventions.ConstructorName"/>
     <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
     <rule ref="Generic.PHP.CharacterBeforePHPOpeningTag"/>
@@ -58,13 +53,13 @@
 
     <!--PEAR rules-->
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
-    <rule ref="PEAR.NamingConventions.ValidFunctionName"/>
-    <rule ref="PEAR.NamingConventions.ValidVariableName"/>
+    <!-- <rule ref="PEAR.NamingConventions.ValidVariableName"/> -->
 
     <!--Squiz rules-->
     <rule ref="Squiz.Scope.MethodScope"/>
 
     <!--Our own custom rules-->
     <rule ref="TFD.Strings.DoubleQuoteUsage"/>
+    <rule ref="TFD.NamingConventions.ValidFunctionName"/>
 
 </ruleset>
