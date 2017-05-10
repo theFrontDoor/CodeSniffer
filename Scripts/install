@@ -1,0 +1,78 @@
+#!/usr/bin/env php
+<?php
+
+$phpcsRepoURL = 'https://github.com/squizlabs/PHP_CodeSniffer.git';
+$tfdRepoURL = 'git@github.com:theFrontDoor/CodeSniffer.git';
+$standardsDir = 'CodeSniffer/Standards/TFD/';
+$installDir = '/usr/local/phpcs/';
+$phpcsBranch = '2.9';
+$tfdBranch = 'feature/Cleanup'; // Todo: Change to master
+
+logstr('Installing PHPCS');
+
+if (is_dir($installDir)) {
+    logstr('Removing existing phpcs directory ' . $installDir . '..');
+    rrmdir($installDir);
+}
+
+mkdir($installDir);
+
+logstr('Cloning new PHPCS..');
+exec('git clone -b ' . escapeshellarg($phpcsBranch) . ' ' . escapeshellarg($phpcsRepoURL) . ' ' . escapeshellarg($installDir));
+
+logstr('Cloning new TFD standard..');
+exec('git clone -b ' . escapeshellarg($tfdBranch) . ' ' . escapeshellarg($tfdRepoURL) . ' ' . escapeshellarg($installDir . $standardsDir));
+
+$binaries = ['phpcs', 'phpcbf'];
+$binDir = realpath($installDir . 'scripts/') . '/';
+
+foreach ($binaries as $binary) {
+
+    $target = '/usr/local/bin/' . $binary;
+    $source = $binDir . $binary;
+
+    if (is_link($target) && file_exists($target)) {
+
+        logstr('Removing old binary links');
+        unlink($target);
+
+    }
+
+    logstr('Creating symlink for binary ' . $binary);
+    symlink($source, $target);
+
+}
+
+logstr('Setting default standard..');
+exec('phpcs --config-set default_standard TFD');
+
+logstr('Done!');
+
+// Utility below
+
+function logstr($str) {
+    echo($str . PHP_EOL);
+}
+
+function rrmdir($dir) {
+    if (!is_dir($dir)) {
+        return;
+    }
+
+    $objects = scandir($dir);
+    foreach ($objects as $object) {
+        if ($object !== '.' && $object !== '..') {
+
+            $fullPath = $dir . DIRECTORY_SEPARATOR . $object;
+            if (filetype($fullPath) === 'dir') {
+                rrmdir($fullPath);
+            } else {
+                unlink($fullPath);
+            }
+
+        }
+    }
+
+    rmdir($dir);
+
+}
