@@ -46,14 +46,13 @@
     <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
     <rule ref="Generic.WhiteSpace.ScopeIndent">
         <properties>
-            <!--This has been disabled due to arrays not counting as indent level-->
+            <!--This property has been disabled due to arrays not counting as indent level-->
             <!--<property name="exact" value="true"/>-->
         </properties>
     </rule>
 
     <!--PEAR rules-->
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
-    <!-- <rule ref="PEAR.NamingConventions.ValidVariableName"/> -->
 
     <!--Squiz rules-->
     <rule ref="Squiz.Scope.MethodScope"/>
@@ -61,5 +60,6 @@
     <!--Our own custom rules-->
     <rule ref="TFD.Strings.DoubleQuoteUsage"/>
     <rule ref="TFD.NamingConventions.ValidFunctionName"/>
+    <rule ref="TFD.NamingConventions.ValidVariableName"/>
 
 </ruleset>

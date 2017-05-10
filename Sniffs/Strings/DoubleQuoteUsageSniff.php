@@ -27,8 +27,8 @@
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
-{
+class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff {
+
 
 
     /**
@@ -36,12 +36,11 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
      *
      * @return array
      */
-    public function register()
-    {
-        return array(
+    public function register() {
+        return [
             T_CONSTANT_ENCAPSED_STRING,
             T_DOUBLE_QUOTED_STRING,
-        );
+        ];
 
     }//end register()
 
@@ -55,8 +54,7 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {
+    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
         $tokens = $phpcsFile->getTokens();
 
         // We are only interested in the first token in a multi-line string.
@@ -68,7 +66,7 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
         $lastStringToken = $stackPtr;
 
         $i = ($stackPtr + 1);
-        if (isset($tokens[$i]) === true) {
+        if (isset($tokens[$i]) === TRUE) {
             while ($i < $phpcsFile->numTokens
                 && $tokens[$i]['code'] === $tokens[$stackPtr]['code']
             ) {
@@ -79,7 +77,7 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
         }
 
         // Check if it's a double quoted string.
-        if (strpos($workingString, '"') === false) {
+        if (strpos($workingString, '"') === FALSE) {
             return;
         }
 
@@ -103,7 +101,7 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
             return;
         }//end if
 
-        $allowedChars = array(
+        $allowedChars = [
             '\0',
             '\1',
             '\2',
@@ -122,19 +120,19 @@ class TFD_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Sniff
             '\e',
             '\u',
             '\'',
-        );
+        ];
 
         foreach ($allowedChars as $testChar) {
-            if (strpos($workingString, $testChar) !== false) {
+            if (strpos($workingString, $testChar) !== FALSE) {
                 return;
             }
         }
 
         $error = 'String %s does not require double quotes; use single quotes instead';
-        $data  = array(str_replace(array("\r", "\n"), array('\r', '\n'), $workingString));
+        $data  = [str_replace(["\r", "\n"], ['\r', '\n'], $workingString)];
         $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotRequired', $data);
 
-        if ($fix === true) {
+        if ($fix === TRUE) {
             $phpcsFile->fixer->beginChangeset();
             $innerContent = substr($workingString, 1, -1);
             $innerContent = str_replace('\"', '"', $innerContent);
