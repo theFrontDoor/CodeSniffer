@@ -132,22 +132,18 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
         // prefix if there is one because we cant determine if it is private or
         // public.
         $testMethodName = $methodName;
-        if ($scopeSpecified === FALSE && $methodName{0} === '_') {
+        if ($methodName[0] === '_') {
             $testMethodName = substr($methodName, 1);
         }
 
-        if (PHP_CodeSniffer::isCamelCaps($testMethodName, $methodProps['is_static'], $isPublic, FALSE) === FALSE) {
-            if ($scopeSpecified === TRUE) {
-                $error = '%s method name "%s" is not in camel caps format';
-                $data  = [
-                    ucfirst($scope),
-                    $errorData[0],
-                ];
-                $phpcsFile->addError($error, $stackPtr, 'ScopeNotCamelCaps', $data);
-            } else {
-                $error = 'Method name "%s" is not in camel caps format';
-                $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
-            }
+        if (!PHP_CodeSniffer::isCamelCaps($testMethodName, $methodProps['is_static'], $isPublic, FALSE)) {
+
+            $error = '%s method name "%s" is not in camel caps format';
+            $data  = [
+                ($scopeSpecified ? ucfirst($scope) : 'Method'),
+                $errorData[0],
+            ];
+            $phpcsFile->addError($error, $stackPtr, 'ScopeNotCamelCaps', $data);
 
             return;
         }
