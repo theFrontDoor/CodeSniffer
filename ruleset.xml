@@ -1,6 +1,13 @@
 <?xml version="1.0"?>
 <ruleset name="TFD">
 
+    <!--
+        Couple of notes on how the sniff file works:
+
+        All Sniffs in the current ruleset will be automatically included, but we define them anyway
+        When setting the severity for a specific error in a sniff the sniff itself will automatically be included
+    -->
+
     <description>The TFD coding standard.</description>
 
     <!--Generic rules-->
@@ -58,7 +65,14 @@
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
     <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent"/>
 
+    <!--PSR2 rules-->
     <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <severity>0</severity>
+    </rule>
+    <rule ref="PSR2.Files.ClosingTag"/>
+    <rule ref="PSR2.Files.EndFileNewline"/>
+    <rule ref="PSR2.Namespaces.NamespaceDeclaration"/>
+    <rule ref="PSR2.Namespaces.UseDeclaration.MultipleDeclarations">
         <severity>0</severity>
     </rule>
 
