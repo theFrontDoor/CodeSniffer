@@ -91,10 +91,9 @@
     <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
         <severity>0</severity>
     </rule>
-    <rule ref="Squiz.WhiteSpace.SemicolonSpacingSniff"/>
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
 
     <!--Our own custom rules-->
-    <rule ref="TFD.Strings.DoubleQuoteUsage"/>
     <rule ref="TFD.NamingConventions.ValidFunctionName"/>
     <rule ref="TFD.NamingConventions.ValidVariableName"/>
 
