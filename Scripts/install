@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+$sublimeLinterConfigFile ='/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings';
+$sublimeConfigFile = '/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings';
 $phpcsRepoURL = 'https://github.com/squizlabs/PHP_CodeSniffer.git';
 $tfdRepoURL = 'git@github.com:theFrontDoor/CodeSniffer.git';
 $standardsDir = 'CodeSniffer/Standards/TFD/';
@@ -46,7 +48,22 @@ foreach ($binaries as $binary) {
 logstr('Setting default standard..');
 exec('phpcs --config-set default_standard TFD');
 
+logstr('Updating sublime config file..');
+
+$users = scandir('/Users');
+foreach ($users as $user) {
+    if ($user[0] === '.') {
+        continue;
+    }
+
+    logstr('  User ' . $user);
+
+    update_sublime($user);
+
+}
+
 logstr('Done!');
+logstr(PHP_EOL . 'Don\'t forget to install the packages EditorConfig, SublimeLinter, SublimeLinter-php and SublimeLinter-phpcs for Sublime!');
 
 // Utility below
 
@@ -74,5 +91,55 @@ function rrmdir($dir) {
     }
 
     rmdir($dir);
+
+}
+
+function update_sublime($username) {
+
+    global $sublimeConfigFile, $sublimeLinterConfigFile;
+    $base = '/Users/' . $username;
+
+    if (!is_dir($base . '/Library/Application Support/Sublime Text 3')) {
+        return;
+    }
+
+    $subConf = [];
+    if (file_exists($base . $sublimeConfigFile)) {
+        $subConf = json_decode(file_get_contents($base . $sublimeConfigFile), TRUE);
+    }
+
+    $targetConf = [
+        'trim_trailing_white_space_on_save' => TRUE,
+        'ensure_newline_at_eof_on_save' => TRUE,
+        'trim_automatic_white_space' => TRUE,
+        'translate_tabs_to_spaces' => TRUE,
+        'default_line_ending' => 'unix',
+        'tab_size' => 4,
+    ];
+    file_put_contents($base . $sublimeConfigFile, json_encode(array_replace_recursive($subConf, $targetConf), JSON_PRETTY_PRINT));
+
+    $subLintConf = [];
+    if (file_exists($base . $sublimeLinterConfigFile)) {
+        $subLintConf = json_decode(file_get_contents($base . $sublimeLinterConfigFile), TRUE);
+    }
+
+    $targetLinterConf = [
+        'user' => [
+            'linters' => [
+                'php' => [
+                    '@disable' => FALSE,
+                    'args'     => [],
+                    'excludes' => []
+                ],
+                'phpcs' => [
+                    '@disable' => FALSE,
+                    'args'     => [],
+                    'excludes' => [],
+                    'standard' => 'TFD'
+                ]
+            ]
+        ]
+    ];
+    file_put_contents($base . $sublimeLinterConfigFile, json_encode(array_replace_recursive($subLintConf, $targetLinterConf), JSON_PRETTY_PRINT));
 
 }
