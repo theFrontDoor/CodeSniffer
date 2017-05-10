@@ -78,6 +78,19 @@
 
     <!--Squiz rules-->
     <rule ref="Squiz.Scope.MethodScope"/>
+    <rule ref="Squiz.Commenting.EmptyCatchComment"/>
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
+    <rule ref="Squiz.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="error" value="false"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage.ContainsVar">
+        <severity>0</severity>
+    </rule>
 
     <!--Our own custom rules-->
     <rule ref="TFD.Strings.DoubleQuoteUsage"/>
