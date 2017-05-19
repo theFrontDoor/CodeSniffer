@@ -1,12 +1,39 @@
 #!/usr/bin/env php
 <?php
 
-$sublimeLinterConfigFile ='/Library/Application Support/Sublime Text 3/Packages/User/SublimeLinter.sublime-settings';
-$sublimeConfigFile = '/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings';
+$createSymlinks = FALSE;
+
+switch (PHP_OS) {
+    case 'WINNT':
+
+        $sublimeDir = 'C:\Users\Kevin\AppData\Roaming\Sublime Text 3\\';
+        $installDir = 'C:\phpcs\\';
+        $usersDir = 'C:\Users\\';
+
+        break;
+    case 'Linux':
+
+        $createSymlinks = TRUE;
+        $sublimeDir = NULL; // Todo
+        $installDir = '/usr/local/phpcs/';
+        $usersDir = '/home/';
+
+        break;
+    case 'Darwin':
+
+        $createSymlinks = TRUE;
+        $sublimeDir = '/Library/Application Support/Sublime Text 3/';
+        $installDir = '/usr/local/phpcs/';
+        $usersDir = '/Users/';
+
+        break;
+    default:
+        throw new \Exception('Unhandled OS: ' . PHP_OS);
+}
+
 $phpcsRepoURL = 'https://github.com/squizlabs/PHP_CodeSniffer.git';
 $tfdRepoURL = 'git@github.com:theFrontDoor/CodeSniffer.git';
 $standardsDir = 'CodeSniffer/Standards/TFD/';
-$installDir = '/usr/local/phpcs/';
 $phpcsBranch = '2.9';
 $tfdBranch = 'feature/Cleanup'; // Todo: Change to master
 
@@ -25,23 +52,27 @@ exec('git clone -b ' . escapeshellarg($phpcsBranch) . ' ' . escapeshellarg($phpc
 logstr('Cloning new TFD standard..');
 exec('git clone -b ' . escapeshellarg($tfdBranch) . ' ' . escapeshellarg($tfdRepoURL) . ' ' . escapeshellarg($installDir . $standardsDir));
 
-$binaries = ['phpcs', 'phpcbf'];
-$binDir = realpath($installDir . 'scripts/') . '/';
+if ($createSymlinks) {
 
-foreach ($binaries as $binary) {
+    $binaries = ['phpcs', 'phpcbf'];
+    $binDir = realpath($installDir . 'scripts/') . '/';
 
-    $target = '/usr/local/bin/' . $binary;
-    $source = $binDir . $binary;
+    foreach ($binaries as $binary) {
 
-    if (is_link($target) && file_exists($target)) {
+        $target = '/usr/local/bin/' . $binary;
+        $source = $binDir . $binary;
 
-        logstr('Removing old binary links');
-        unlink($target);
+        if (is_link($target) && file_exists($target)) {
+
+            logstr('Removing old binary links');
+            unlink($target);
+
+        }
+
+        logstr('Creating symlink for binary ' . $binary);
+        symlink($source, $target);
 
     }
-
-    logstr('Creating symlink for binary ' . $binary);
-    symlink($source, $target);
 
 }
 
@@ -50,7 +81,7 @@ exec('phpcs --config-set default_standard TFD');
 
 logstr('Updating sublime config file..');
 
-$users = scandir('/Users');
+$users = scandir($usersDir);
 foreach ($users as $user) {
     if ($user[0] === '.') {
         continue;
@@ -63,7 +94,7 @@ foreach ($users as $user) {
 }
 
 logstr('Done!');
-logstr(PHP_EOL . 'Don\'t forget to install the packages EditorConfig, SublimeLinter, SublimeLinter-php and SublimeLinter-phpcs for Sublime!');
+logstr(PHP_EOL . 'Don\'t forget to install the packages EditorConfig, SublimeLinter, SublimeLinter-php and SublimeLinter-phpcs for Sublime!' . PHP_EOL);
 
 // Utility below
 
@@ -96,7 +127,13 @@ function rrmdir($dir) {
 
 function update_sublime($username) {
 
-    global $sublimeConfigFile, $sublimeLinterConfigFile;
+    global $sublimeDir;
+    if ($sublimeDir === NULL) {
+        return;
+    }
+
+    $sublimeLinterConfigFile = $sublimeDir . 'Packages' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'SublimeLinter.sublime-settings';
+    $sublimeConfigFile = $sublimeDir . 'Packages' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'Preferences.sublime-settings';
     $base = '/Users/' . $username;
 
     if (!is_dir($base . '/Library/Application Support/Sublime Text 3')) {
