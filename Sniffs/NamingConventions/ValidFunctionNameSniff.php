@@ -136,7 +136,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
             $testMethodName = substr($methodName, 1);
         }
 
-        if (!PHP_CodeSniffer::isCamelCaps($testMethodName, $methodProps['is_static'], $isPublic, FALSE)) {
+        if (!PHP_CodeSniffer::isCamelCaps($testMethodName, $methodProps['is_static'], TRUE, FALSE)) {
 
             $error = '%s method name "%s" is not in camel caps format';
             $data  = [
