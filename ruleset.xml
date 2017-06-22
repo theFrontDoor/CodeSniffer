@@ -67,7 +67,6 @@
         <severity>0</severity>
     </rule>
     <rule ref="PEAR.Functions.ValidDefaultValue"/>
-    <rule ref="PEAR.NamingConventions.ValidClassName"/>
     <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent"/>
 
     <!--PSR2 rules-->
@@ -99,6 +98,7 @@
     <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
 
     <!--Our own custom rules-->
+    <rule ref="TFD.NamingConventions.ValidClassName"/>
     <rule ref="TFD.NamingConventions.ValidFunctionName"/>
     <rule ref="TFD.NamingConventions.ValidVariableName"/>
 
