@@ -1,6 +1,10 @@
 <?php
 
-class TFD_Sniffs_NamingConventions_ValidClassNameSniff extends PEAR_Sniffs_NamingConventions_ValidClassNameSniff {
+if (class_exists('PEAR_Sniffs_NamingConventions_ValidClassNameSniff', TRUE) === FALSE) {
+    throw new \PHP_CodeSniffer_Exception('Class PEAR_Sniffs_NamingConventions_ValidClassNameSniff not found');
+}
+
+class TFD_Sniffs_NamingConventions_ValidClassNameSniff extends \PEAR_Sniffs_NamingConventions_ValidClassNameSniff {
 
     public function register() {
         return array_merge(parent::register(), [
@@ -11,13 +15,9 @@ class TFD_Sniffs_NamingConventions_ValidClassNameSniff extends PEAR_Sniffs_Namin
 
     }//end register()
 
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
-
-        var_dump($stackPtr);
+    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
 
         $tokens = $phpcsFile->getTokens();
-
-        // var_dump($tokens);
 
         $classNamePtr = $phpcsFile->findNext(T_STRING, $stackPtr);
         $className    = trim($tokens[$classNamePtr]['content']);

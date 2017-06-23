@@ -1,19 +1,10 @@
 <?php
-/**
- * TFD_Sniffs_NamingConventions_ValidFunctionNameSniff.
- */
 
 if (class_exists('PHP_CodeSniffer_Standards_AbstractScopeSniff', TRUE) === FALSE) {
-    throw new PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found');
+    throw new \PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found');
 }
 
-/**
- * TFD_Sniffs_NamingConventions_ValidFunctionNameSniff.
- *
- * Ensures method names are correct depending on whether they are public, private, or static and that functions are named correctly.
- *
- */
-class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffer_Standards_AbstractScopeSniff {
+class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniffer_Standards_AbstractScopeSniff {
 
 
     /**
@@ -59,14 +50,13 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
     /**
      * Processes the tokens within the scope.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                  $stackPtr  The position where this token was
-     *                                        found.
-     * @param int                  $currScope The position of the current scope.
+     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
+     * @param int                   $stackPtr  The position where this token was found.
+     * @param int                   $currScope The position of the current scope.
      *
      * @return void
      */
-    protected function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope) {
+    protected function processTokenWithinScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope) {
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === NULL) {
             // Ignore closures.
@@ -154,13 +144,12 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
     /**
      * Processes the tokens outside the scope.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                  $stackPtr  The position where this token was
-     *                                        found.
+     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
+     * @param int                   $stackPtr  The position where this token was found.
      *
      * @return void
      */
-    protected function processTokenOutsideScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processTokenOutsideScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === NULL) {
             // Ignore closures.
@@ -249,11 +238,10 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
         }
 
         if ($validName === FALSE) {
+
             $newName = rtrim($newPackagePart, '_').'_'.$newCamelCapsPart;
             if ($newPackagePart === '') {
                 $newName = $newCamelCapsPart;
-            } else {
-                $newName = rtrim($newPackagePart, '_').'_'.$newCamelCapsPart;
             }
 
             $error  = 'Function name "%s" is invalid; consider "%s" instead';
@@ -262,7 +250,6 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends PHP_CodeSniffe
             $phpcsFile->addError($error, $stackPtr, 'FunctionNameInvalid', $data);
         }
 
-    }//end processTokenOutsideScope()
+    }
 
-
-}//end class
+}
