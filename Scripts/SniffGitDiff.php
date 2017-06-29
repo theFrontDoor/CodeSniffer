@@ -1,11 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-var_dump(phpinfo());
-
 $dirArg = './';
 if (isset($argv[1])) {
-
 
     $dirArg = $argv[1];
     if (substr($dirArg, -1) !== DIRECTORY_SEPARATOR) {
