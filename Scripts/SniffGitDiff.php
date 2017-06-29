@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+var_dump($_ENV);
+
 $dirArg = './';
 if (isset($argv[1])) {
 
