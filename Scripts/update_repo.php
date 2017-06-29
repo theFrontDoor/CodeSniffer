@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 <?php
 
-$reposToPull = array(
-    '/usr/local/phpcs' => 'origin 2.9',
-    '/usr/local/phpcs/CodeSniffer/Standards/TFD' => 'origin master',
-);
+$phpcsDir = is_dir('/usr/local/phpcs') ? '/usr/local/phpcs' : '~/.bin/phpcs';
+
+$reposToPull = [
+    $phpcsDir => 'origin 2.9',
+    $phpcsDir . '/CodeSniffer/Standards/TFD' => 'origin master',
+];
 
 echo('Updating repositories..' . PHP_EOL);
 

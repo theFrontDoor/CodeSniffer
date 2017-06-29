@@ -3,9 +3,8 @@
  * TFD_Sniffs_NamingConventions_ValidVariableNameSniff.
  */
 
-if (class_exists('PHP_CodeSniffer_Standards_AbstractVariableSniff', true) === false) {
-    $error = 'Class PHP_CodeSniffer_Standards_AbstractVariableSniff not found';
-    throw new PHP_CodeSniffer_Exception($error);
+if (!class_exists('PHP_CodeSniffer_Standards_AbstractVariableSniff', TRUE)) {
+    throw new PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractVariableSniff not found');
 }
 
 /**
@@ -29,7 +28,7 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffe
         $tokens = $phpcsFile->getTokens();
 
         $memberProps = $phpcsFile->getMemberProperties($stackPtr);
-        if (empty($memberProps) === true) {
+        if (empty($memberProps)) {
             return;
         }
 
@@ -53,7 +52,7 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffe
         }
 
         // If it's not a private member, it must not have an underscore on the front.
-        if ($isPublic === true && $scopeSpecified === true && $memberName{0} === '_') {
+        if ($isPublic && $scopeSpecified && $memberName{0} === '_') {
             $error = '%s member variable "%s" must not be prefixed with an underscore';
             $data = [
                 ucfirst($scope),
@@ -66,20 +65,20 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffe
         // If the member is static and doesn't start with an uppercase letter
         if ($isStatic && !$isUpperCase) {
             $error = '%s member variable "%s" must is static and must start with an uppercase character';
-            $data  = array(
+            $data  = [
                 ucfirst($scope),
                 $memberName,
-            );
+            ];
             $phpcsFile->addError($error, $stackPtr, 'StaticUppercase', $data);
             return;
         }
 
         if (!$isStatic && $isUpperCase) {
             $error = '%s member variable "%s" must is not static and should start with an lowercase character';
-            $data  = array(
+            $data  = [
                 ucfirst($scope),
                 $memberName,
-            );
+            ];
             $phpcsFile->addError($error, $stackPtr, 'StaticUppercase', $data);
             return;
         }

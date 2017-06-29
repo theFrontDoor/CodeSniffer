@@ -12,7 +12,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
      *
      * @var array
      */
-    protected $magicMethods = [
+    protected $_magicMethods = [
         'construct'  => TRUE,
         'destruct'   => TRUE,
         'call'       => TRUE,
@@ -35,7 +35,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
      *
      * @var array
      */
-    protected $magicFunctions = ['autoload' => TRUE];
+    protected $_magicFunctions = ['autoload' => TRUE];
 
 
     /**
@@ -64,12 +64,12 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
         }
 
         $className = $phpcsFile->getDeclarationName($currScope);
-        $errorData = [$className.'::'.$methodName];
+        $errorData = [$className . '::' . $methodName];
 
         // Is this a magic method. i.e., is prefixed with "__" ?
         if (preg_match('|^__[^_]|', $methodName) !== 0) {
             $magicPart = strtolower(substr($methodName, 2));
-            if (isset($this->magicMethods[$magicPart]) === FALSE) {
+            if (isset($this->_magicMethods[$magicPart]) === FALSE) {
                 $error = 'Method name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
                 $phpcsFile->addError($error, $stackPtr, 'MethodDoubleUnderscore', $errorData);
             }
@@ -83,7 +83,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
         }
 
         // PHP4 destructors are allowed to break our rules.
-        if ($methodName === '_'.$className) {
+        if ($methodName === '_' . $className) {
             return;
         }
 
@@ -166,7 +166,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
         // Is this a magic function. i.e., it is prefixed with "__".
         if (preg_match('|^__[^_]|', $functionName) !== 0) {
             $magicPart = strtolower(substr($functionName, 2));
-            if (isset($this->magicFunctions[$magicPart]) === FALSE) {
+            if (isset($this->_magicFunctions[$magicPart]) === FALSE) {
                 $error = 'Function name "%s" is invalid; only PHP magic methods should be prefixed with a double underscore';
                 $phpcsFile->addError($error, $stackPtr, 'FunctionDoubleUnderscore', $errorData);
             }
@@ -218,7 +218,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
         // Every function must have a camel caps part, so check that first.
         if (PHP_CodeSniffer::isCamelCaps($camelCapsPart, FALSE, TRUE, FALSE) === FALSE) {
             $validName        = FALSE;
-            $newCamelCapsPart = strtolower($camelCapsPart{0}).substr($camelCapsPart, 1);
+            $newCamelCapsPart = strtolower($camelCapsPart{0}) . substr($camelCapsPart, 1);
         }
 
         if ($packagePart !== '') {
@@ -228,7 +228,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
                 if ($bit{0} !== strtoupper($bit{0})) {
                     $newPackagePart = '';
                     foreach ($nameBits as $bit) {
-                        $newPackagePart .= strtoupper($bit{0}).substr($bit, 1).'_';
+                        $newPackagePart .= strtoupper($bit{0}) . substr($bit, 1) . '_';
                     }
 
                     $validName = FALSE;
@@ -239,7 +239,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
 
         if ($validName === FALSE) {
 
-            $newName = rtrim($newPackagePart, '_').'_'.$newCamelCapsPart;
+            $newName = rtrim($newPackagePart, '_') . '_' . $newCamelCapsPart;
             if ($newPackagePart === '') {
                 $newName = $newCamelCapsPart;
             }
