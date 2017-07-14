@@ -112,7 +112,6 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
         }
 
         $phpcsFile->recordMetric($stackPtr, 'Spaces after control structure open parenthesis', $spaceAfterOpen);
-
         if ($spaceAfterOpen !== $this->requiredSpacesAfterOpen) {
 
             $error = 'Expected %s spaces after opening bracket; %s found';
@@ -172,7 +171,7 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
                 $spaceAfterClose = strlen($tokens[($parenCloser + 1)]['content']);
             }
 
-            if ($spaceAfterClose !== $this->requiredSpacesAfterClose) {
+            if ($spaceAfterClose !== $this->requiredSpacesAfterClose && $tokens[($parenCloser + 1)]['code'] !== T_SEMICOLON) {
 
                 $error = 'Expected %s spaces after closing bracket; %s found';
                 $data  = [
