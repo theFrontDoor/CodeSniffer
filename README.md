@@ -1,36 +1,35 @@
 ## Windows
-- Install PHP7 to C:\php
-- Add C:\php to PATH
+- Download PHP7 and extract it to C:\PHP
+- Add C:\PHP to PATH
 - Download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\php
 - Start an elevated cmd in C:\php and run `php go-pear.phar`
 - Import the generated .reg file into your windows registry
 - Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
 - Open C:\php\phpcs in Sublime. Replace all instances of "/../CodeSniffer" with "/Pear/PHP/CodeSniffer"
-- Checkout git@github.com:theFrontDoor/CodeSniffer.git to C:\php\pear\PHP\CodeSniffer\Standards\TFD using Sourcetree
+- Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\php\pear\PHP\CodeSniffer\Standards\TFD
 
 ## OSX
-- Install PHP
+- Install PHP 7 with pear
+```bash
+brew install homebrew/php/php71 --with-pear
+```
 - Install PHP_CodeSniffer
 ```bash
-# make a .bin directory in your home folder
-mkdir ~/.bin
-cd ~/.bin
+sudo pear install PHP_CodeSniffer
+```
 
-# clone PHP_CodeSniffer from GitHub
-git clone -b 2.9 https://github.com/squizlabs/PHP_CodeSniffer.git phpcs
+- Add the TFD standard
+```bash
 
-# add phpcs to your path
-sudo ln -s ~/.bin/phpcs/scripts/phpcs /usr/local/bin/phpcs
+# Link PHPCS and PHPCBF to the bin folder
+ln -s $(brew --prefix php71)/bin/phpcs /usr/local/bin/phpcs
+ln -s $(brew --prefix php71)/bin/phpcbf /usr/local/bin/phpcbf
 
-# check if phpcs bin is available
-phpcs -i
+# Clone the TFD coding standard into correct location
+sudo git clone https://github.com/theFrontDoor/CodeSniffer.git $(brew --prefix php71)/lib/php/PHP/CodeSniffer/Standards/TFD
 
-# clone TFD coding standard into correct location
-cd ~/.bin/phpcs/CodeSniffer/Standards
-git clone https://github.com/theFrontDoor/CodeSniffer.git TFD
-
-# set the default standard
-phpcs --config-set default_standard TFD
+# Set the default standard
+sudo phpcs --config-set default_standard TFD
 ```
 
 ## Install Sublime packages
@@ -42,9 +41,9 @@ phpcs --config-set default_standard TFD
 
 Restart SublimeText.
 
-## Sublime config
+### Sublime config
 
-### User
+#### User
 ````
 {
     "trim_trailing_white_space_on_save": true,
@@ -56,7 +55,7 @@ Restart SublimeText.
 }
 ````
 
-### Package - SublimeLinter - User
+#### Package - SublimeLinter - User
 ````
 {
     "linters": {
