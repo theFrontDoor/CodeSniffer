@@ -1,0 +1,182 @@
+#!/usr/bin/env php
+<?php
+
+$createSymlinks = FALSE;
+
+switch (PHP_OS) {
+    case 'WINNT':
+
+        $sublimeDir = 'C:\Users\Kevin\AppData\Roaming\Sublime Text 3\\';
+        $installDir = 'C:\phpcs\\';
+        $usersDir = 'C:\Users\\';
+
+        break;
+    case 'Linux':
+
+        $createSymlinks = TRUE;
+        $sublimeDir = NULL; // Todo
+        $installDir = '/usr/local/phpcs/';
+        $usersDir = '/home/';
+
+        break;
+    case 'Darwin':
+
+        $createSymlinks = TRUE;
+        $sublimeDir = '/Library/Application Support/Sublime Text 3/';
+        $installDir = '/usr/local/phpcs/';
+        $usersDir = '/Users/';
+
+        break;
+    default:
+        throw new \Exception('Unhandled OS: ' . PHP_OS);
+}
+
+$phpcsRepoURL = 'https://github.com/squizlabs/PHP_CodeSniffer.git';
+$tfdRepoURL = 'git@github.com:theFrontDoor/CodeSniffer.git';
+$standardsDir = 'CodeSniffer/Standards/TFD/';
+$phpcsBranch = '2.9';
+$tfdBranch = 'feature/Cleanup'; // Todo: Change to master
+
+logstr('Installing PHPCS');
+
+if (is_dir($installDir)) {
+    logstr('Removing existing phpcs directory ' . $installDir . '..');
+    rrmdir($installDir);
+}
+
+mkdir($installDir);
+
+logstr('Cloning new PHPCS..');
+exec('git clone -b ' . escapeshellarg($phpcsBranch) . ' ' . escapeshellarg($phpcsRepoURL) . ' ' . escapeshellarg($installDir));
+
+logstr('Cloning new TFD standard..');
+exec('git clone -b ' . escapeshellarg($tfdBranch) . ' ' . escapeshellarg($tfdRepoURL) . ' ' . escapeshellarg($installDir . $standardsDir));
+
+if ($createSymlinks) {
+
+    $binaries = ['phpcs', 'phpcbf'];
+    $binDir = realpath($installDir . 'scripts/') . '/';
+
+    foreach ($binaries as $binary) {
+
+        $target = '/usr/local/bin/' . $binary;
+        $source = $binDir . $binary;
+
+        if (is_link($target) && file_exists($target)) {
+
+            logstr('Removing old binary links');
+            unlink($target);
+
+        }
+
+        logstr('Creating symlink for binary ' . $binary);
+        symlink($source, $target);
+
+    }
+
+}
+
+logstr('Setting default standard..');
+exec('phpcs --config-set default_standard TFD');
+
+logstr('Updating sublime config file..');
+
+$users = scandir($usersDir);
+foreach ($users as $user) {
+    if ($user[0] === '.') {
+        continue;
+    }
+
+    logstr('  User ' . $user);
+
+    update_sublime($user);
+
+}
+
+logstr('Done!');
+logstr(PHP_EOL . 'Don\'t forget to install the packages EditorConfig, SublimeLinter, SublimeLinter-php and SublimeLinter-phpcs for Sublime!' . PHP_EOL);
+
+// Utility below
+
+function logstr($str) {
+    echo($str . PHP_EOL);
+}
+
+function rrmdir($dir) {
+    if (!is_dir($dir)) {
+        return;
+    }
+
+    $objects = scandir($dir);
+    foreach ($objects as $object) {
+        if ($object !== '.' && $object !== '..') {
+
+            $fullPath = $dir . DIRECTORY_SEPARATOR . $object;
+            if (filetype($fullPath) === 'dir') {
+                rrmdir($fullPath);
+            } else {
+                unlink($fullPath);
+            }
+
+        }
+    }
+
+    rmdir($dir);
+
+}
+
+function update_sublime($username) {
+
+    global $sublimeDir;
+    if ($sublimeDir === NULL) {
+        return;
+    }
+
+    $sublimeLinterConfigFile = $sublimeDir . 'Packages' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'SublimeLinter.sublime-settings';
+    $sublimeConfigFile = $sublimeDir . 'Packages' . DIRECTORY_SEPARATOR . 'User' . DIRECTORY_SEPARATOR . 'Preferences.sublime-settings';
+    $base = '/Users/' . $username;
+
+    if (!is_dir($base . '/Library/Application Support/Sublime Text 3')) {
+        return;
+    }
+
+    $subConf = [];
+    if (file_exists($base . $sublimeConfigFile)) {
+        $subConf = json_decode(file_get_contents($base . $sublimeConfigFile), TRUE);
+    }
+
+    $targetConf = [
+        'trim_trailing_white_space_on_save' => TRUE,
+        'ensure_newline_at_eof_on_save' => TRUE,
+        'trim_automatic_white_space' => TRUE,
+        'translate_tabs_to_spaces' => TRUE,
+        'default_line_ending' => 'unix',
+        'tab_size' => 4,
+    ];
+    file_put_contents($base . $sublimeConfigFile, json_encode(array_replace_recursive($subConf, $targetConf), JSON_PRETTY_PRINT));
+
+    $subLintConf = [];
+    if (file_exists($base . $sublimeLinterConfigFile)) {
+        $subLintConf = json_decode(file_get_contents($base . $sublimeLinterConfigFile), TRUE);
+    }
+
+    $targetLinterConf = [
+        'user' => [
+            'linters' => [
+                'php' => [
+                    '@disable' => FALSE,
+                    'args'     => [],
+                    'excludes' => []
+                ],
+                'phpcs' => [
+                    '@disable' => FALSE,
+                    'args'     => [],
+                    'excludes' => [],
+                    'standard' => 'TFD'
+                ]
+            ]
+        ]
+    ];
+    file_put_contents($base . $sublimeLinterConfigFile, json_encode(array_replace_recursive($subLintConf, $targetLinterConf), JSON_PRETTY_PRINT));
+
+}

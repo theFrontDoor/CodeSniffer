@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 
 $dirArg = './';
@@ -14,17 +14,17 @@ if (isset($argv[1])) {
 $cwd = getcwd();
 chdir($dirArg);
 
-echo('Collecting files..' . PHP_EOL);
+logstr('Collecting files..');
 $files = array_filter(explode(PHP_EOL, trim(shell_exec($cmd = 'git diff-tree --no-commit-id --name-only -r HEAD'))), function($value) {
     return $value !== '';
 });
 
 chdir($cwd);
 
-echo($cmd . ' ' . PHP_EOL);
+logstr($cmd);
 
 if (empty($files)) {
-    echo('  - No changed files found, assuming merge request, exiting' . PHP_EOL);
+    logstr('No changed files found, assuming merge request, exiting', 1);
     exit(0);
 }
 
@@ -35,42 +35,42 @@ foreach ($files as $file) {
 
     $fullFile = $dirArg . $file;
     if (!file_exists($fullFile)) { // File got removed in git, nothing to sniff
-        echo('  - ' . $file . ' doesn\'t exist anymore, assuming removal and skipping' . PHP_EOL);
+        logstr($file . ' doesn\'t exist anymore, assuming removal and skipping', 1);
         continue;
     }
 
     if (substr($fullFile, -4) !== '.php' && substr($fullFile, -8) !== '.php.inc') {
-        echo(' - ' . $file . ' skipping due to invalid file extension' . PHP_EOL);
+        logstr($file . ' skipping due to invalid file extension', 1);
         continue;
     }
 
     if (is_dir($fullFile)) {
-        echo('  - ' . $file . ' is a directory, assuming submodule and skipping' . PHP_EOL);
+        logstr($file . ' is a directory, assuming submodule and skipping', 1);
         continue;
     }
 
     $gotFile = TRUE;
 
-    echo('  - ' . $file . PHP_EOL);
+    logstr($file, 1);
     $cmdStr .= escapeshellarg($fullFile) . ' ';
 
 }
 
 if (!$gotFile) {
-    echo(PHP_EOL . 'Didn\'t find any files to lint, exiting..' . PHP_EOL . PHP_EOL);
+    logstr(PHP_EOL . 'Didn\'t find any files to lint, exiting..' . PHP_EOL);
     exit(0);
 }
 
-echo(PHP_EOL . 'Executing: ' . $cmdStr . PHP_EOL);
+logstr(PHP_EOL . 'Executing: ' . $cmdStr);
 $rawJSON = shell_exec($cmdStr);
 $result = json_decode($rawJSON, TRUE);
 if (!$result) {
-    echo('Unable to decode json:' . PHP_EOL);
-    echo($rawJSON . PHP_EOL);
+    logstr('Unable to decode json:');
+    logstr($rawJSON);
     exit(1);
 }
 
-echo(PHP_EOL . 'Total: ' . PHP_EOL . '  ' . $result['totals']['errors'] . ' errors' . PHP_EOL . '  ' . $result['totals']['warnings'] . ' warnings' . PHP_EOL . '  ' . $result['totals']['fixable'] . ' fixable' . PHP_EOL . PHP_EOL);
+logstr(PHP_EOL . 'Total: ' . PHP_EOL . '  ' . $result['totals']['errors'] . ' errors' . PHP_EOL . '  ' . $result['totals']['warnings'] . ' warnings' . PHP_EOL . '  ' . $result['totals']['fixable'] . ' fixable' . PHP_EOL);
 
 $buildDir = getenv('CI_PROJECT_DIR');
 $buildDirLen = ($buildDir ? strlen($buildDir) + 1 : 0); // The +1 is to that the first / is removed so it appears relative
@@ -78,17 +78,17 @@ $buildDirLen = ($buildDir ? strlen($buildDir) + 1 : 0); // The +1 is to that the
 $shouldFail = FALSE;
 foreach ($result['files'] as $file => $data) {
 
-    echo('  "' . substr($file, $buildDirLen) . '"' . PHP_EOL);
+    logstr('"' . substr($file, $buildDirLen) . '"', 1);
 
     if (empty($data['messages'])) {
 
-        echo('    - No errors' . PHP_EOL);
+        logstr('No errors', 2);
 
     } else {
 
         foreach ($data['messages'] as $msgData) {
 
-            echo('    - ' . $msgData['type'] . ': ' . $msgData['message'] . ' at line ' . $msgData['line'] . ', symbol ' . $msgData['column'] . PHP_EOL);
+            logstr($msgData['type'] . ': ' . $msgData['message'] . ' at line ' . $msgData['line'] . ', symbol ' . $msgData['column'], 2);
 
             if ($msgData['type'] === 'ERROR') {
                 $shouldFail = TRUE;
@@ -105,3 +105,13 @@ foreach ($result['files'] as $file => $data) {
 echo(PHP_EOL);
 
 exit((int) $shouldFail);
+
+function logstr($str, $depth = 0) {
+
+    $prefix = '';
+    if ($depth > 0) {
+        $prefix = str_repeat('  ', $depth) . '- ';
+    }
+
+    echo($prefix . $str . PHP_EOL);
+}
