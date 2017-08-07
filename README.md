@@ -15,7 +15,7 @@ brew install homebrew/php/php71 --with-pear
 ```
 - Install PHP_CodeSniffer
 ```bash
-sudo pear install PHP_CodeSniffer
+sudo pear install PHP_CodeSniffer-2.9.1
 ```
 
 - Add the TFD standard
