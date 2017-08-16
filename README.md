@@ -1,14 +1,18 @@
 ## Windows
 - Download PHP7 and extract it to C:\PHP
 - Add C:\PHP to PATH
-- Download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\php
+- Download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\PHP
 - Start an elevated cmd in C:\php and run `php go-pear.phar`
-- Import the generated .reg file into your windows registry
-- Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
-- Open C:\php\phpcs in Sublime. Replace all instances of "/../CodeSniffer" with "/Pear/PHP/CodeSniffer"
-- Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\php\pear\PHP\CodeSniffer\Standards\TFD
+- Import the generated .reg file into your windows registry (Should be in  C:\PHP)
+- Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer-2.9.1```
+- Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\PHP\pear\PHP\CodeSniffer\Standards\TFD
 
 ## OSX
+- Ensure xcode is installed with xcode command line tools
+```bash
+xcode-select --install
+```
+
 - Install PHP 7 with pear
 ```bash
 brew install homebrew/php/php71 --with-pear
