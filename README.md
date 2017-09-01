@@ -13,9 +13,9 @@
 xcode-select --install
 ```
 
-- Install PHP 7 with pear
+- Install PHP 7 TS with pear
 ```bash
-brew install homebrew/php/php71 --with-pear
+brew install homebrew/php/php70 --with-pear --with-thread-safety
 ```
 - Install PHP_CodeSniffer
 ```bash
