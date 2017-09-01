@@ -26,11 +26,11 @@ sudo pear install PHP_CodeSniffer-2.9.1
 ```bash
 
 # Link PHPCS and PHPCBF to the bin folder
-ln -s $(brew --prefix php71)/bin/phpcs /usr/local/bin/phpcs
-ln -s $(brew --prefix php71)/bin/phpcbf /usr/local/bin/phpcbf
+ln -s $(brew --prefix php70)/bin/phpcs /usr/local/bin/phpcs
+ln -s $(brew --prefix php70)/bin/phpcbf /usr/local/bin/phpcbf
 
 # Clone the TFD coding standard into correct location
-sudo git clone https://github.com/theFrontDoor/CodeSniffer.git $(brew --prefix php71)/lib/php/PHP/CodeSniffer/Standards/TFD
+sudo git clone https://github.com/theFrontDoor/CodeSniffer.git $(brew --prefix php70)/lib/php/PHP/CodeSniffer/Standards/TFD
 
 # Set the default standard
 sudo phpcs --config-set default_standard TFD
