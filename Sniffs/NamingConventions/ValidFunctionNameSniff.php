@@ -1,10 +1,14 @@
 <?php
 
-if (class_exists('PHP_CodeSniffer_Standards_AbstractScopeSniff', TRUE) === FALSE) {
-    throw new \PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found');
+namespace TFD\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Files\File;
+
+if (class_exists('PHP_CodeSniffer\Standards\AbstractScopeSniff', TRUE) === FALSE) {
+    throw new \PHP_CodeSniffer_Exception('Class PHP_CodeSniffer\Standards\AbstractScopeSniff not found');
 }
 
-class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniffer_Standards_AbstractScopeSniff {
+class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniffer\Standards\AbstractScopeSniff {
 
 
     /**
@@ -50,13 +54,13 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
     /**
      * Processes the tokens within the scope.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                   $stackPtr  The position where this token was found.
-     * @param int                   $currScope The position of the current scope.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param int                         $stackPtr  The position where this token was found.
+     * @param int                         $currScope The position of the current scope.
      *
      * @return void
      */
-    protected function processTokenWithinScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope) {
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope) {
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === NULL) {
             // Ignore closures.
@@ -144,12 +148,12 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
     /**
      * Processes the tokens outside the scope.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                   $stackPtr  The position where this token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param int                         $stackPtr  The position where this token was found.
      *
      * @return void
      */
-    protected function processTokenOutsideScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === NULL) {
             // Ignore closures.

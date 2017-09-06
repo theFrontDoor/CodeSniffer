@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TFD.iml" filepath="$PROJECT_DIR$/.idea/TFD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CodeSniffer.iml" filepath="$PROJECT_DIR$/.idea/CodeSniffer.iml" />
     </modules>
   </component>
 </project>

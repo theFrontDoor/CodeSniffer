@@ -19,7 +19,7 @@ brew install homebrew/php/php70 --with-pear --with-thread-safety
 ```
 - Install PHP_CodeSniffer
 ```bash
-sudo pear install PHP_CodeSniffer-2.9.1
+sudo pear install PHP_CodeSniffer
 ```
 
 - Add the TFD standard
@@ -30,7 +30,7 @@ ln -s $(brew --prefix php70)/bin/phpcs /usr/local/bin/phpcs
 ln -s $(brew --prefix php70)/bin/phpcbf /usr/local/bin/phpcbf
 
 # Clone the TFD coding standard into correct location
-sudo git clone https://github.com/theFrontDoor/CodeSniffer.git $(brew --prefix php70)/lib/php/PHP/CodeSniffer/Standards/TFD
+sudo git clone https://github.com/theFrontDoor/CodeSniffer.git $(brew --prefix php70)/lib/php/test/PHP_CodeSniffer/src/Standards/TFD
 
 # Set the default standard
 sudo phpcs --config-set default_standard TFD
