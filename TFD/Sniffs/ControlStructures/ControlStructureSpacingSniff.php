@@ -62,9 +62,9 @@ class ControlStructureSpacingSniff implements Sniff {
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                        $stackPtr  The position of the current token
-     *                                              in the stack passed in $tokens.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
+     *                                               in the stack passed in $tokens.
      *
      * @return void
      */
@@ -199,10 +199,6 @@ class ControlStructureSpacingSniff implements Sniff {
             }
 
         }
-
-    }
-
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
 
     }
 

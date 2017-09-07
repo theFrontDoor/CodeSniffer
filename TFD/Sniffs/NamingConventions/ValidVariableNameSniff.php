@@ -8,8 +8,8 @@ namespace TFD\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer\Files\File;
 
-if (!class_exists('PHP\CodeSniffer\Standards\AbstractVariableSniff', TRUE)) {
-    throw new PHP_CodeSniffer_Exception('Class PHP\CodeSniffer\Standards\AbstractVariableSniff not found');
+if (!class_exists('PHP_CodeSniffer\Sniffs\AbstractVariableSniff', TRUE)) {
+    throw new \PHP_CodeSniffer\Exceptions\RuntimeException('Class PHP_CodeSniffer\Sniffs\AbstractVariableSniff not found');
 }
 
 /**
@@ -17,7 +17,7 @@ if (!class_exists('PHP\CodeSniffer\Standards\AbstractVariableSniff', TRUE)) {
  *
  * Checks the naming of member variables.
  */
-class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP\CodeSniffer\Standards\AbstractVariableSniff {
+class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP_CodeSniffer\Sniffs\AbstractVariableSniff {
 
     /**
      * Processes class member variables.

@@ -4,20 +4,11 @@ namespace TFD\Sniffs\NamingConventions;
 
 use PHP_CodeSniffer\Files\File;
 
-if (class_exists('PEAR\Sniffs\NamingConventions\ValidClassNameSniff', TRUE) === FALSE) {
-    throw new \PHP_CodeSniffer_Exception('Class PEAR\Sniffs\NamingConventions\ValidClassNameSniff not found');
+if (class_exists('\PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidClassNameSniff', TRUE) === FALSE) {
+    throw new \PHP_CodeSniffer\Exceptions\RuntimeException('Class \PEAR\Sniffs\NamingConventions\ValidClassNameSniff not found');
 }
 
-class ValidClassNameSniff extends \PEAR\Sniffs\NamingConventions\ValidClassNameSniff {
-
-    public function register() {
-        return array_merge(parent::register(), [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-        ]);
-
-    }//end register()
+class ValidClassNameSniff extends \PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidClassNameSniff {
 
     public function process(File $phpcsFile, $stackPtr) {
 
@@ -48,10 +39,6 @@ class ValidClassNameSniff extends \PEAR\Sniffs\NamingConventions\ValidClassNameS
             }
 
         }
-
-    }
-
-    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
 
     }
 
