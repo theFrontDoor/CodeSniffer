@@ -26,7 +26,6 @@
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
     <rule ref="Generic.Files.ByteOrderMark"/>
     <rule ref="Generic.Files.EndFileNewline"/>
-    <rule ref="Generic.Files.OneClassPerFile"/>
     <rule ref="Generic.Files.OneInterfacePerFile"/>
     <rule ref="Generic.Files.OneTraitPerFile"/>
     <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
@@ -105,6 +104,7 @@
 
     <!--Our own custom rules-->
     <rule ref="TFD.ControlStructures.ControlStructureSpacing"/>
+    <rule ref="TFD.Files.OneClassPerFile"/>
     <rule ref="TFD.NamingConventions.ValidClassName"/>
     <rule ref="TFD.NamingConventions.ValidFunctionName"/>
     <rule ref="TFD.NamingConventions.ValidVariableName"/>

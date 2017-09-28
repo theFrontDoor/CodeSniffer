@@ -1,21 +1,16 @@
 <?php
 
-if (class_exists('PEAR_Sniffs_NamingConventions_ValidClassNameSniff', TRUE) === FALSE) {
-    throw new \PHP_CodeSniffer_Exception('Class PEAR_Sniffs_NamingConventions_ValidClassNameSniff not found');
+namespace TFD\Sniffs\NamingConventions;
+
+use PHP_CodeSniffer\Files\File;
+
+if (class_exists('\PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidClassNameSniff', TRUE) === FALSE) {
+    throw new \PHP_CodeSniffer\Exceptions\RuntimeException('Class \PEAR\Sniffs\NamingConventions\ValidClassNameSniff not found');
 }
 
-class TFD_Sniffs_NamingConventions_ValidClassNameSniff extends \PEAR_Sniffs_NamingConventions_ValidClassNameSniff {
+class ValidClassNameSniff extends \PHP_CodeSniffer\Standards\PEAR\Sniffs\NamingConventions\ValidClassNameSniff {
 
-    public function register() {
-        return array_merge(parent::register(), [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-        ]);
-
-    }//end register()
-
-    public function process(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr) {
 
         $tokens = $phpcsFile->getTokens();
 

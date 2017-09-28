@@ -1,6 +1,11 @@
 <?php
 
-class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff {
+namespace TFD\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
+
+class ControlStructureSpacingSniff implements Sniff {
 
     /**
      * How many spaces should precede the closing bracket.
@@ -57,13 +62,13 @@ class TFD_Sniffs_ControlStructures_ControlStructureSpacingSniff implements PHP_C
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
+     *                                               in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    public function process(File $phpcsFile, $stackPtr) {
 
         $this->requiredSpacesBeforeClose = (int) $this->requiredSpacesBeforeClose;
         $this->requiredSpacesAfterClose   = (int) $this->requiredSpacesAfterClose;

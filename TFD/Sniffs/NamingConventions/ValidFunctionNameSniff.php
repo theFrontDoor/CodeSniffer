@@ -1,10 +1,15 @@
 <?php
 
-if (class_exists('PHP_CodeSniffer_Standards_AbstractScopeSniff', TRUE) === FALSE) {
-    throw new \PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractScopeSniff not found');
+namespace TFD\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Util\Common;
+use PHP_CodeSniffer\Files\File;
+
+if (class_exists('\PHP_CodeSniffer\Sniffs\AbstractScopeSniff', TRUE) === FALSE) {
+    throw new \PHP_CodeSniffer\Exceptions\RuntimeException('Class \PHP_CodeSniffer\Sniffs\AbstractScopeSniff not found');
 }
 
-class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniffer_Standards_AbstractScopeSniff {
+class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniffer\Sniffs\AbstractScopeSniff {
 
 
     /**
@@ -50,13 +55,13 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
     /**
      * Processes the tokens within the scope.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                   $stackPtr  The position where this token was found.
-     * @param int                   $currScope The position of the current scope.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param int                         $stackPtr  The position where this token was found.
+     * @param int                         $currScope The position of the current scope.
      *
      * @return void
      */
-    protected function processTokenWithinScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope) {
+    protected function processTokenWithinScope(File $phpcsFile, $stackPtr, $currScope) {
         $methodName = $phpcsFile->getDeclarationName($stackPtr);
         if ($methodName === NULL) {
             // Ignore closures.
@@ -126,7 +131,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
             $testMethodName = substr($methodName, 1);
         }
 
-        if (!PHP_CodeSniffer::isCamelCaps($testMethodName, $methodProps['is_static'], TRUE, FALSE)) {
+        if (!Common::isCamelCaps($testMethodName, $methodProps['is_static'], TRUE, FALSE)) {
 
             $error = '%s method name "%s" is not in camel caps format';
             $data  = [
@@ -144,12 +149,12 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
     /**
      * Processes the tokens outside the scope.
      *
-     * @param \PHP_CodeSniffer_File $phpcsFile The file being processed.
-     * @param int                   $stackPtr  The position where this token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being processed.
+     * @param int                         $stackPtr  The position where this token was found.
      *
      * @return void
      */
-    protected function processTokenOutsideScope(\PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processTokenOutsideScope(File $phpcsFile, $stackPtr) {
         $functionName = $phpcsFile->getDeclarationName($stackPtr);
         if ($functionName === NULL) {
             // Ignore closures.
@@ -216,7 +221,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
         $newCamelCapsPart = $camelCapsPart;
 
         // Every function must have a camel caps part, so check that first.
-        if (PHP_CodeSniffer::isCamelCaps($camelCapsPart, FALSE, TRUE, FALSE) === FALSE) {
+        if (Common::isCamelCaps($camelCapsPart, FALSE, TRUE, FALSE) === FALSE) {
             $validName        = FALSE;
             $newCamelCapsPart = strtolower($camelCapsPart{0}) . substr($camelCapsPart, 1);
         }

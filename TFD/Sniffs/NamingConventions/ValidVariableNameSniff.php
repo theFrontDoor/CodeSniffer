@@ -3,8 +3,13 @@
  * TFD_Sniffs_NamingConventions_ValidVariableNameSniff.
  */
 
-if (!class_exists('PHP_CodeSniffer_Standards_AbstractVariableSniff', TRUE)) {
-    throw new PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractVariableSniff not found');
+
+namespace TFD\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Files\File;
+
+if (!class_exists('PHP_CodeSniffer\Sniffs\AbstractVariableSniff', TRUE)) {
+    throw new \PHP_CodeSniffer\Exceptions\RuntimeException('Class PHP_CodeSniffer\Sniffs\AbstractVariableSniff not found');
 }
 
 /**
@@ -12,18 +17,18 @@ if (!class_exists('PHP_CodeSniffer_Standards_AbstractVariableSniff', TRUE)) {
  *
  * Checks the naming of member variables.
  */
-class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffer_Standards_AbstractVariableSniff {
+class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP_CodeSniffer\Sniffs\AbstractVariableSniff {
 
     /**
      * Processes class member variables.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+     * @param int                         $stackPtr  The position of the current token
+     *                                               in the stack passed in $tokens.
      *
      * @return void
      */
-    protected function processMemberVar(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processMemberVar(File $phpcsFile, $stackPtr) {
 
         $tokens = $phpcsFile->getTokens();
 
@@ -89,12 +94,12 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffe
     /**
      * Processes normal variables.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where this token was found.
-     * @param int                  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
-    protected function processVariable(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processVariable(File $phpcsFile, $stackPtr) {
 
         /*
             We don't care about normal variables.
@@ -106,12 +111,12 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffe
     /**
      * Processes variables in double quoted strings.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where this token was found.
-     * @param int                  $stackPtr  The position where the token was found.
+     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where this token was found.
+     * @param int                         $stackPtr  The position where the token was found.
      *
      * @return void
      */
-    protected function processVariableInString(PHP_CodeSniffer_File $phpcsFile, $stackPtr) {
+    protected function processVariableInString(File $phpcsFile, $stackPtr) {
 
         /*
             We don't care about normal variables.
