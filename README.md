@@ -4,35 +4,32 @@
 - Download PEAR from https://pear.php.net/manual/en/installation.getting.php and save go-pear.phar to C:\PHP
 - Start an elevated cmd in C:\php and run `php go-pear.phar`
 - Import the generated .reg file into your windows registry (Should be in  C:\PHP)
-- Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer-2.9.1```
+- Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
 - Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\PHP\pear\PHP\CodeSniffer\Standards\TFD
 
 ## OSX
-- Ensure xcode is installed with xcode command line tools
+
 ```bash
+# Ensure xcode is installed with xcode command line tools, note: this might spawn a prompt
 xcode-select --install
-```
 
-- Install PHP 7 TS with pear
-```bash
-brew install homebrew/php/php70 --with-pear --with-thread-safety
-```
-- Install PHP_CodeSniffer
-```bash
+# Install PHP 7.2 TS with pear, note that thread safety is optional but recommended
+brew install homebrew/php/php72 --with-pear --with-thread-safety
+
+# Install PHP_CodeSniffer
 sudo pear install PHP_CodeSniffer
-```
-
-- Add the TFD standard
-```bash
 
 # Link PHPCS and PHPCBF to the bin folder
-ln -s $(brew --prefix php70)/bin/phpcs /usr/local/bin/phpcs
-ln -s $(brew --prefix php70)/bin/phpcbf /usr/local/bin/phpcbf
+ln -sfn $(brew --prefix php72)/bin/phpcs /usr/local/bin/phpcs
+ln -sfn $(brew --prefix php72)/bin/phpcbf /usr/local/bin/phpcbf
+
+# Delete the existing dir if exists
+sudo rm -rf ~/CodeSniffer_TFD/ 2> /dev/null
 
 # Clone the TFD coding standard into correct location
 git clone https://github.com/theFrontDoor/CodeSniffer.git ~/CodeSniffer_TFD/
 
-# Set the default standard
+# Add the standard to the sniffers path and set it as the default standard
 sudo phpcs --config-set installed_paths ~/CodeSniffer_TFD/TFD
 sudo phpcs --config-set default_standard TFD
 ```
