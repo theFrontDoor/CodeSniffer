@@ -69,7 +69,7 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP_CodeSniff
 
         // If the member is static and doesn't start with an uppercase letter
         if ($isStatic && !$isUpperCase) {
-            $error = '%s member variable "%s" must is static and must start with an uppercase character';
+            $error = '%s member variable "%s" is static and must start with an uppercase character';
             $data  = [
                 ucfirst($scope),
                 $memberName,
@@ -79,7 +79,7 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP_CodeSniff
         }
 
         if (!$isStatic && $isUpperCase) {
-            $error = '%s member variable "%s" must is not static and should start with an lowercase character';
+            $error = '%s member variable "%s" is not static and should start with an lowercase character';
             $data  = [
                 ucfirst($scope),
                 $memberName,
