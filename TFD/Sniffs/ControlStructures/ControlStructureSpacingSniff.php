@@ -71,9 +71,9 @@ class ControlStructureSpacingSniff implements Sniff {
     public function process(File $phpcsFile, $stackPtr) {
 
         $this->requiredSpacesBeforeClose = (int) $this->requiredSpacesBeforeClose;
-        $this->requiredSpacesAfterClose   = (int) $this->requiredSpacesAfterClose;
+        $this->requiredSpacesAfterClose  = (int) $this->requiredSpacesAfterClose;
         $this->requiredSpacesAfterOpen   = (int) $this->requiredSpacesAfterOpen;
-        $this->requiredSpacesBeforeOpen = (int) $this->requiredSpacesBeforeOpen;
+        $this->requiredSpacesBeforeOpen  = (int) $this->requiredSpacesBeforeOpen;
 
         $tokens = $phpcsFile->getTokens();
 
@@ -131,7 +131,7 @@ class ControlStructureSpacingSniff implements Sniff {
                 $padding = str_repeat(' ', $this->requiredSpacesAfterOpen);
                 if ($spaceAfterOpen === 0) {
                     $phpcsFile->fixer->addContent($parenOpener, $padding);
-                } else if ($spaceAfterOpen === 'newline') {
+                } elseif ($spaceAfterOpen === 'newline') {
                     $phpcsFile->fixer->replaceToken(($parenOpener + 1), '');
                 } else {
                     $phpcsFile->fixer->replaceToken(($parenOpener + 1), $padding);
@@ -171,27 +171,44 @@ class ControlStructureSpacingSniff implements Sniff {
 
             }
 
-            $spaceAfterClose = 0;
-            if ($tokens[($parenCloser + 1)]['code'] === T_WHITESPACE) {
-                $spaceAfterClose = strlen($tokens[($parenCloser + 1)]['content']);
-            }
+            if ($tokens[($parenCloser + 1)]['content'] === $phpcsFile->eolChar) {
 
-            if ($spaceAfterClose !== $this->requiredSpacesAfterClose && $tokens[($parenCloser + 1)]['code'] !== T_SEMICOLON) {
+                $error = 'Expected %s spaces after closing bracket; newline found';
+                $data = [$this->requiredSpacesAfterClose];
 
-                $error = 'Expected %s spaces after closing bracket; %s found';
-                $data  = [
-                    $this->requiredSpacesAfterClose,
-                    $spaceAfterClose,
-                ];
-
-                $fix = $phpcsFile->addFixableError($error, ($parenCloser + 1), 'SpaceAfterCloseBrace', $data);
+                $fix = $phpcsFile->addFixableError($error, ($parenCloser + 1), 'NewlineAfterIfStatement', $data);
                 if ($fix) {
 
                     $padding = str_repeat(' ', $this->requiredSpacesAfterClose);
-                    if ($spaceAfterClose === 0) {
-                        $phpcsFile->fixer->addContent($parenCloser, $padding);
-                    } else {
-                        $phpcsFile->fixer->replaceToken(($parenCloser + 1), $padding);
+                    $phpcsFile->fixer->replaceToken(($parenCloser + 1), $padding);
+
+                }
+
+            } else {
+
+                $spaceAfterClose = 0;
+                if ($tokens[($parenCloser + 1)]['code'] === T_WHITESPACE) {
+                    $spaceAfterClose = strlen($tokens[($parenCloser + 1)]['content']);
+                }
+
+                if ($spaceAfterClose !== $this->requiredSpacesAfterClose && $tokens[($parenCloser + 1)]['code'] !== T_SEMICOLON) {
+
+                    $error = 'Expected %s spaces after closing bracket; %s found';
+                    $data = [
+                        $this->requiredSpacesAfterClose,
+                        $spaceAfterClose,
+                    ];
+
+                    $fix = $phpcsFile->addFixableError($error, ($parenCloser + 1), 'SpaceAfterCloseBrace', $data);
+                    if ($fix) {
+
+                        $padding = str_repeat(' ', $this->requiredSpacesAfterClose);
+                        if ($spaceAfterClose === 0) {
+                            $phpcsFile->fixer->addContent($parenCloser, $padding);
+                        } else {
+                            $phpcsFile->fixer->replaceToken(($parenCloser + 1), $padding);
+                        }
+
                     }
 
                 }
