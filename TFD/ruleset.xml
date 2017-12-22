@@ -13,16 +13,19 @@
     <!--Generic rules-->
 
     <rule ref="Generic.Classes.OpeningBraceSameLine"/>
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/> <!-- Todo: Make this a warning? -->
-    <rule ref="Generic.CodeAnalysis.EmptyStatement"/> <!-- Todo: Make this a warning? -->
+    <rule ref="Generic.Arrays.ArrayIndent"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
     <rule ref="Generic.CodeAnalysis.JumbledIncrementer"/>
-    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/> <!-- Todo: Make this a warning? -->
-    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/> <!-- Todo: Make this a warning -->
-    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/> <!-- Todo: Make this a warning -->
-    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>  <!-- Todo: Make this a warning -->
-    <!--<rule ref="Generic.Commenting.DocComment"/> &lt;!&ndash; Todo: Make this a warning &ndash;&gt;-->
-    <rule ref="Generic.Commenting.Fixme"/> <!-- Todo: Make this a warning -->
-    <rule ref="Generic.Commenting.Todo"/> <!-- Todo: Make this a warning -->
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <!--<rule ref="Generic.Commenting.DocComment">-->
+        <!--<exclude name="Generic.Commenting.DocComment.MissingShort"/>-->
+    <!--</rule>-->
+    <rule ref="Generic.Commenting.Fixme"/>
+    <rule ref="Generic.Commenting.Todo"/>
     <rule ref="Generic.ControlStructures.InlineControlStructure"/>
     <rule ref="Generic.Files.ByteOrderMark"/>
     <rule ref="Generic.Files.EndFileNewline"/>
