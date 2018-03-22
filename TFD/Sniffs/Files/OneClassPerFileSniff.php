@@ -53,7 +53,6 @@ class OneClassPerFileSniff implements Sniff {
             $stopLine = $tokens[$classToken['scope_closer']]['line'];
 
             $lineCost = ($stopLine - $startLine) + 1;
-            var_dump($lineCost);
             if ($lineCost > $this->maxLineCost) {
                 $errorClasses[] = $nextClass;
             }
