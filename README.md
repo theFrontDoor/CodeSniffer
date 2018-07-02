@@ -14,14 +14,17 @@
 xcode-select --install
 
 # Install PHP 7.2 TS with pear, note that thread safety is optional but recommended
-brew install homebrew/php/php72 --with-pear --with-thread-safety
+brew install php@7.2 --with-pear --with-thread-safety
+
+# Add pear to the include path
+echo 'include_path = ".:'pear config-get php_dir'"' | sudo tee -a /etc/php.ini
 
 # Install PHP_CodeSniffer
 sudo pear install PHP_CodeSniffer
 
 # Link PHPCS and PHPCBF to the bin folder
-ln -sfn $(brew --prefix php72)/bin/phpcs /usr/local/bin/phpcs
-ln -sfn $(brew --prefix php72)/bin/phpcbf /usr/local/bin/phpcbf
+ln -sfn $(brew --prefix php@7.2)/bin/phpcs /usr/local/bin/phpcs
+ln -sfn $(brew --prefix php@7.2)/bin/phpcbf /usr/local/bin/phpcbf
 
 # Delete the existing dir if exists
 sudo rm -rf ~/CodeSniffer_TFD/ 2> /dev/null
