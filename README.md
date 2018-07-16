@@ -5,7 +5,9 @@
 - Start an elevated cmd in C:\php and run `php go-pear.phar`
 - Import the generated .reg file into your windows registry (Should be in  C:\PHP)
 - Run the following from within the elevated cmd promp: ```pear install PHP_CodeSniffer```
-- Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\PHP\pear\PHP\CodeSniffer\Standards\TFD
+- Checkout https://github.com/theFrontDoor/CodeSniffer.git to C:\CodeSniffer_TFD
+- Run ```phpcs --config-set installed_paths C:\CodeSniffer_TFD```
+- Run ```phpcs --config-set default_standard TFD```
 
 ## OSX
 

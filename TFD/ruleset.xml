@@ -87,11 +87,6 @@
     <rule ref="Squiz.Scope.MethodScope"/>
     <rule ref="Squiz.Commenting.EmptyCatchComment"/>
     <rule ref="Squiz.Operators.ValidLogicalOperators"/>
-    <rule ref="Squiz.PHP.ForbiddenFunctions">
-        <properties>
-            <property name="error" value="false"/>
-        </properties>
-    </rule>
     <rule ref="Squiz.PHP.LowercasePHPFunctions"/>
     <rule ref="Squiz.PHP.NonExecutableCode"/>
     <rule ref="Squiz.Scope.StaticThisUsage"/>
@@ -115,5 +110,14 @@
 
     <!--Exclude auto generated files-->
     <exclude-pattern>*/PHPProtoBuf/*</exclude-pattern>
+
+    <!--Forbidden functions-->
+    <property name="forbiddenFunctions" type="array">
+        <element key="sizeof" value="count"/>
+        <element key="delete" value="unset"/>
+        <element key="print" value="echo"/>
+        <element key="is_null" value="null"/>
+        <element key="create_function" value="null"/>
+    </property>
 
 </ruleset>
