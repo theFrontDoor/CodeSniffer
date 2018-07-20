@@ -19,7 +19,7 @@ xcode-select --install
 brew install php@7.2 --with-pear --with-thread-safety
 
 # Add pear to the include path
-echo 'include_path = ".:'pear config-get php_dir'"' | sudo tee -a /etc/php.ini
+echo 'include_path = ".:'$(pear config-get php_dir)'"' | sudo tee -a $(php -r 'echo php_ini_loaded_file();')
 
 # Install PHP_CodeSniffer
 sudo pear install PHP_CodeSniffer
