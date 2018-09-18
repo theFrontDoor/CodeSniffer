@@ -24,9 +24,8 @@ echo 'include_path = ".:'$(pear config-get php_dir)'"' | sudo tee -a $(php -r 'e
 # Install PHP_CodeSniffer
 sudo pear install PHP_CodeSniffer
 
-# Link PHPCS and PHPCBF to the bin folder
-ln -sfn $(brew --prefix php@7.2)/bin/phpcs /usr/local/bin/phpcs
-ln -sfn $(brew --prefix php@7.2)/bin/phpcbf /usr/local/bin/phpcbf
+# Unlink old PHP versions and re-link this version
+brew unlink php && brew link php@7.2
 
 # Delete the existing dir if exists
 sudo rm -rf ~/CodeSniffer_TFD/ 2> /dev/null
