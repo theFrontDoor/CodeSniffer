@@ -84,6 +84,10 @@
     <rule ref="PSR2.Namespaces.UseDeclaration.MultipleDeclarations">
         <severity>0</severity>
     </rule>
+    <rule ref="PSR2.Methods.MethodDeclaration"/>
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <severity>0</severity>
+    </rule>
 
     <!--Squiz rules-->
     <rule ref="Squiz.Scope.MethodScope"/>
