@@ -4,7 +4,7 @@
 $phpcsDir = is_dir('/usr/local/phpcs') ? '/usr/local/phpcs' : '~/.bin/phpcs';
 
 $reposToPull = [
-    $phpcsDir => 'origin 2.9',
+    $phpcsDir => 'origin 3.4.0',
     $phpcsDir . '/CodeSniffer/Standards/TFD' => 'origin master',
 ];
 
