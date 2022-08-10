@@ -57,7 +57,7 @@ class TFD_Sniffs_NamingConventions_ValidVariableNameSniff extends \PHP_CodeSniff
         }
 
         // If it's not a private member, it must not have an underscore on the front.
-        if ($isPublic && $scopeSpecified && $memberName{0} === '_') {
+        if ($isPublic && $scopeSpecified && $memberName[0] === '_') {
             $error = '%s member variable "%s" must not be prefixed with an underscore';
             $data = [
                 ucfirst($scope),
