@@ -100,7 +100,7 @@ class TFD_Sniffs_NamingConventions_ValidFunctionNameSniff extends \PHP_CodeSniff
 
         // If it's a private and protected methods must have an underscore on the front.
         if (!$isPublic) {
-            if ($methodNam[0] !== '_') {
+            if ($methodName[0] !== '_') {
                 $error = 'Private method name "%s" must be prefixed with an underscore';
                 $phpcsFile->addError($error, $stackPtr, 'PrivateNoUnderscore', $errorData);
                 $phpcsFile->recordMetric($stackPtr, 'Private method prefixed with underscore', 'no');
